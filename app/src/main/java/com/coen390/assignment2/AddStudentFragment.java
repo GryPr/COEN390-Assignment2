@@ -36,8 +36,16 @@ public class AddStudentFragment extends DialogFragment {
         editTextGPA = currentView.findViewById(R.id.editTextGPA);
 
         cancelAddStudentButton = currentView.findViewById(R.id.cancelAddStudentButton);
+        cancelAddStudentButton.setOnClickListener(onClickCancelAddStudentButton);
         saveStudentButton = currentView.findViewById(R.id.saveStudentButton);
     }
 
+    private final View.OnClickListener onClickSaveStudentButton = view -> {
+
+    };
+
+    private final View.OnClickListener onClickCancelAddStudentButton = view -> {
+        getDialog().dismiss();
+    };
 
 }

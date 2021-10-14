@@ -7,26 +7,33 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
     ListView mainActivityList;
     TextView mainActivityInfo;
+    FloatingActionButton addStudentFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupUI();
     }
 
     protected void setupUI() {
         mainActivityList = findViewById(R.id.mainActivityList);
         mainActivityInfo = findViewById(R.id.mainActivityInfo);
+
+        addStudentFab = findViewById(R.id.addStudentFab);
+        addStudentFab.setOnClickListener(onClickAddStudentFab);
+
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -47,4 +54,9 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private final View.OnClickListener onClickAddStudentFab = view -> {
+        AddStudentFragment dialog = new AddStudentFragment();
+        dialog.show(getSupportFragmentManager(), "AddStudentFragment");
+    };
 }
