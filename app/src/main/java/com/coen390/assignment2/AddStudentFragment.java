@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,8 +41,22 @@ public class AddStudentFragment extends DialogFragment {
         saveStudentButton = currentView.findViewById(R.id.saveStudentButton);
     }
 
-    private final View.OnClickListener onClickSaveStudentButton = view -> {
+    protected boolean validateInputs() {
+        String idString = editTextID.getText().toString();
+        int id = Integer.parseInt(idString);
+        String gpaString = editTextGPA.getText().toString();
+        float gpa = Float.parseFloat(gpaString);
+        return (id >= 10000000 && id <= 99999999) && (gpa >= 0 && gpa <= 4.3);
+    }
 
+    private final View.OnClickListener onClickSaveStudentButton = view -> {
+        if (validateInputs()) {
+            // Save data
+        } else {
+            // Display error toast
+            Toast toast = Toast.makeText(currentView.getContext(), "Invalid Inputs", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     };
 
     private final View.OnClickListener onClickCancelAddStudentButton = view -> {
