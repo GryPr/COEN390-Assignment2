@@ -11,7 +11,7 @@ import com.coen390.assignment2.database.dao.StudentDao;
 import com.coen390.assignment2.database.entity.AccessRecord;
 import com.coen390.assignment2.database.entity.Student;
 
-@Database(entities = {Student.class, AccessRecord.class}, version = 1)
+@Database(entities = {Student.class, AccessRecord.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase db;
 
@@ -22,7 +22,7 @@ public abstract class AppDatabase extends RoomDatabase {
     protected AppDatabase(){}
 
     private static AppDatabase create(Context context) {
-        db = Room.databaseBuilder(context, AppDatabase.class,"studentdatabase").allowMainThreadQueries().build();
+        db = Room.databaseBuilder(context, AppDatabase.class,"studentdatabase").allowMainThreadQueries().fallbackToDestructiveMigration().build();
         return db;
     }
 

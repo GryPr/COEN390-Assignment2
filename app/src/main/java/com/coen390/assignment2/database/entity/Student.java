@@ -45,4 +45,11 @@ public class Student {
         return new Date(timestamp);
     }
 
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
 }

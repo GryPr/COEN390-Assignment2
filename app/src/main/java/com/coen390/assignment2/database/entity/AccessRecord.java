@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 public class AccessRecord {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int uid;
 
     @ColumnInfo(name = "student_id")

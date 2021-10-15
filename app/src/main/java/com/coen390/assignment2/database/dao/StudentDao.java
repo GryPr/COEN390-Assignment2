@@ -1,5 +1,6 @@
 package com.coen390.assignment2.database.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,16 +13,10 @@ import java.util.List;
 @Dao
 public interface StudentDao {
     @Query("SELECT * FROM student")
+    LiveData<List<Student>> getAllLive();
+
+    @Query("SELECT * FROM student")
     List<Student> getAll();
-
-    @Query("SELECT studentID FROM student")
-    List<Integer> getAllId();
-
-    @Query("SELECT name FROM student")
-    List<String> getAllName();
-
-    @Query("SELECT surname FROM student")
-    List<String> getAllSurname();
 
     @Query("SELECT * FROM student WHERE studentID=:id")
     Student findById(int id);
