@@ -13,12 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.coen390.assignment2.Database.DatabaseHelper;
-import com.coen390.assignment2.Database.Models.Student;
+import com.coen390.assignment2.database.AppDatabase;
+import com.coen390.assignment2.database.entity.Student;
 
 public class AddStudentFragment extends DialogFragment {
 
-    protected DatabaseHelper database;
+    protected AppDatabase database;
 
     protected EditText editTextSurname;
     protected EditText editTextName;
@@ -32,7 +32,7 @@ public class AddStudentFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.fragment_add_student, container, false);
-        database = new DatabaseHelper(getContext());
+        database = AppDatabase.getDb(getContext());
         setupUI();
         return currentView;
     }
@@ -80,9 +80,8 @@ public class AddStudentFragment extends DialogFragment {
             Student student = new Student(id, surname, name, gpa);
 
             // If successful, close the fragment
-            if (database.insertStudent(student)) {
-                getDialog().dismiss();
-            }
+            database.studentDao().insertAll(student);
+            getDialog().dismiss();
         } else {
             // Display error toast
             Toast toast = Toast.makeText(currentView.getContext(), "Invalid Inputs", Toast.LENGTH_SHORT);
