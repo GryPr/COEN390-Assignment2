@@ -1,29 +1,29 @@
 package com.coen390.assignment2;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.coen390.assignment2.database.AppDatabase;
+import com.coen390.assignment2.database.DatabaseHelper;
 import com.coen390.assignment2.database.entity.Student;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    protected AppDatabase database;
+    protected DatabaseHelper database;
 
     protected enum Modes {
         NameMode,
@@ -34,17 +34,18 @@ public class MainActivity extends AppCompatActivity {
     protected TextView mainActivityInfo;
     protected FloatingActionButton addStudentFab;
     protected Modes mode;
-    protected int profileCounter = 0;
+    protected List<Student> currentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        database = AppDatabase.getDb(getApplicationContext());
+        database = DatabaseHelper.getDb(getApplicationContext());
         setupUI();
     }
 
     protected void setupUI() {
+        // Setting the default view mode
         mode = Modes.NameMode;
 
         // Setting the views
@@ -54,19 +55,16 @@ public class MainActivity extends AppCompatActivity {
         addStudentFab.setOnClickListener(onClickAddStudentFab);
 
         mainActivityList = findViewById(R.id.mainActivityList);
+        mainActivityList.setOnItemClickListener(onClickListItem);
 
         // Observing for changes in the database
-        database.studentDao().getAllLive().observe(this, new Observer<List<Student>>() {
-            @Override
-            public void onChanged(List<Student> students) {
-                refreshList();
-            }
-        });
+        database.studentDao().getAllLive().observe(this, students -> refreshList());
 
         // First refresh of the list
         refreshList();
     }
 
+    // Binds the activity with the options menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -80,7 +78,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toggleMainActivityDisplay:
-                // do stuff
+                if (mode == Modes.IDMode) {
+                    mode = Modes.NameMode;
+                } else {
+                    mode = Modes.IDMode;
+                }
+                refreshList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -111,16 +114,14 @@ public class MainActivity extends AppCompatActivity {
     // Generates the list of names to be displayed
     private List<String> generateNameList(List<Student> students) {
         // Sort the list in alphabetical order
-        Collections.sort(students, new Comparator<Student>() {
-            @Override
-            public int compare(Student t1, Student t2) {
-                return t1.surname.compareToIgnoreCase(t2.surname);
-            }
-        });
+        Collections.sort(students, (t1, t2) -> t1.surname.compareToIgnoreCase(t2.surname));
+        currentList = students;
         // Merge the surname and name in a single string
         List<String> nameList = new ArrayList<>();
+        int i = 0; // line counter
         for (Student student: students) {
-            nameList.add(student.surname + ", " + student.name);
+            i++;
+            nameList.add(i + ". " + student.surname + ", " + student.name);
         }
         return nameList;
     }
@@ -128,23 +129,30 @@ public class MainActivity extends AppCompatActivity {
     // Generates the list of IDs to be displayed
     private List<String> generateIDList(List<Student> students) {
         // Sort the list in increasing order
-        Collections.sort(students, new Comparator<Student>() {
-            @Override
-            public int compare(Student t1, Student t2) {
-                return Integer.valueOf(t1.studentID).compareTo(t2.studentID);
-            }
-        });
+        Collections.sort(students, (t1, t2) -> Integer.compare(t1.studentID, t2.studentID));
+        currentList = students;
         // Cast the integer IDs to string
         List<String> idList = new ArrayList<>();
+        int i = 0; // line counter
         for (Student student: students) {
-            idList.add(Integer.toString(student.studentID));
+            i++;
+            idList.add(i + ". " + student.studentID);
         }
         return idList;
     }
 
-    // Set the list of events
+    // Set the list of profiles
     protected void setList(String[] list) {
         ArrayAdapter<String> arr = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, list);
         mainActivityList.setAdapter(arr);
     }
+
+    // Click listener for each item
+    private final AdapterView.OnItemClickListener onClickListItem = (parent, view, position, id) -> {
+        Student selectedStudent = currentList.get((int)id);
+        Intent intent = new Intent(this, ProfileActivity.class);
+        // Pass the student object to the activity
+        intent.putExtra("student", selectedStudent);
+        startActivity(intent);
+    };
 }

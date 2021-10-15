@@ -5,11 +5,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 @Entity
-public class Student {
+public class Student implements Serializable {
     @PrimaryKey
     public int studentID;
 
@@ -30,7 +32,7 @@ public class Student {
         this.surname = surname;
         this.name = name;
         this.gpa = gpa;
-        this.timestamp = Calendar.getInstance().getTime().getTime();
+        this.timestamp = System.currentTimeMillis();
     }
 
     public Student(int studentID, String surname, String name, float gpa, Date date) {
@@ -41,15 +43,9 @@ public class Student {
         this.timestamp = date.getTime();
     }
 
-    public Date getDate() {
-        return new Date(timestamp);
-    }
-
-    public int getStudentID() {
-        return studentID;
-    }
-
-    public String getSurname() {
-        return surname;
+    public String getFormattedDate() {
+        Date date = new Date(timestamp);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd @ hh:mm:ss");
+        return format.format(date);
     }
 }

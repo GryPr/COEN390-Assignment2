@@ -12,6 +12,7 @@ import java.util.List;
 
 @Dao
 public interface StudentDao {
+    // LiveData updates the UI in real time
     @Query("SELECT * FROM student")
     LiveData<List<Student>> getAllLive();
 

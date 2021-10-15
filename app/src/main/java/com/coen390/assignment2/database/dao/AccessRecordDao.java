@@ -1,5 +1,6 @@
 package com.coen390.assignment2.database.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -11,15 +12,11 @@ import java.util.List;
 
 @Dao
 public interface AccessRecordDao {
-    @Query("SELECT * FROM accessrecord")
-    List<AccessRecord> getAll();
 
-    @Query("SELECT * FROM accessrecord WHERE uid=:uid")
-    AccessRecord findByUid(int uid);
+    @Query("SELECT * FROM accessrecord WHERE student_id=:id")
+    List<AccessRecord> findByStudentId(int id);
 
     @Insert
     void insertAll(AccessRecord... accessRecords);
 
-    @Delete
-    void delete(AccessRecord accessRecord);
 }
