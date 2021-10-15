@@ -35,6 +35,9 @@ public class ProfileActivity extends AppCompatActivity {
         // Retrieves the student object from the intent
         student = (Student) getIntent().getSerializableExtra("student");
 
+        // Set title of activity
+        setTitle(student.name + " " + student.surname + "'s Profile");
+
         // Get the database
         database = DatabaseHelper.getDb(getApplicationContext());
 

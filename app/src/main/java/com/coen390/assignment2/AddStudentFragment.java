@@ -95,13 +95,13 @@ public class AddStudentFragment extends DialogFragment {
         // Validate the inputs
         InvalidInputs inputValidation = validateInputs(idString, gpaString);
 
-        // Parse string to float and int respectively
-        // Put after input validation in case the fields are empty to avoid exceptions
-        float gpa = Float.parseFloat(gpaString);
-        int id = Integer.parseInt(idString);
-
         // Save data if there are no issues
         if (inputValidation == null) {
+
+            // Parse string to float and int respectively
+            // Put after input validation in case the fields are empty to avoid exceptions
+            float gpa = Float.parseFloat(gpaString);
+            int id = Integer.parseInt(idString);
 
             // Creates the objects to insert in the database
             Student student = new Student(id, surname, name, gpa);
@@ -132,7 +132,7 @@ public class AddStudentFragment extends DialogFragment {
                     toastText = "Invalid inputs";
             }
             // Display error toast
-            Toast toast = Toast.makeText(currentView.getContext(), toastText, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(currentView.getContext(), toastText, Toast.LENGTH_SHORT);
             toast.show();
         }
     };
