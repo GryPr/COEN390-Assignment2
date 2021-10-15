@@ -1,4 +1,4 @@
-package com.coen390.assignment2.Models;
+package com.coen390.assignment2.Database.Models;
 
 import java.util.Calendar;
 import java.util.Date;

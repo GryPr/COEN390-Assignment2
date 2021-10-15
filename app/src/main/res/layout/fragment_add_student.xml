@@ -75,7 +75,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextID" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextID"
+        android:digits="1234567890."/>
 
     <Button
         android:id="@+id/cancelAddStudentButton"

@@ -1,4 +1,4 @@
-package com.coen390.assignment2.Models;
+package com.coen390.assignment2.Database.Models;
 
 
 import java.util.Calendar;
@@ -16,6 +16,14 @@ public class Student {
         this.name = name;
         this.gpa = gpa;
         this.timestamp = Calendar.getInstance().getTime();
+    }
+
+    public Student(int studentID, String surname, String name, float gpa, Date date) {
+        this.studentID = studentID;
+        this.surname = surname;
+        this.name = name;
+        this.gpa = gpa;
+        this.timestamp = date;
     }
 
     public int getStudentID() {

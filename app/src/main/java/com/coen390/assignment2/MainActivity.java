@@ -11,9 +11,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.coen390.assignment2.Database.DatabaseHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
+    protected DatabaseHelper database;
 
     ListView mainActivityList;
     TextView mainActivityInfo;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        database = new DatabaseHelper(getApplicationContext());
         setupUI();
     }
 
